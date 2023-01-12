@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
-
+const Joi = require("joi");
+const { validate, required } = require("joi");
 app.use(express.json());
 
 const genres = [
@@ -35,6 +36,13 @@ app.post("/api/genres", (req, res) => {
     name: req.body.name,
   };
 
+  const result = validateCourse(req.body);
+
+  if (result.error) {
+    res.status(400).send(result.error.details[0]);
+    return;
+  }
+
   genres.push(genre);
   res.send(genre);
 });
@@ -46,6 +54,11 @@ app.put("/api/genres/:id", (req, res) => {
   console.log(genre);
   if (!genre) return res.status(404).send("Genre with given id not found");
 
+  const result = validateCourse(req.body);
+  if (result.error) {
+    res.status(400).send(result.error.details[0]);
+    return;
+  }
   genre.name = req.body.name;
   res.send(genre);
 });
@@ -71,6 +84,16 @@ app.delete("/api/genres/:id", (req, res) => {
 
   res.send(genre);
 });
+
+// Validation function for handling request inputs
+
+function validateCourse(courseObj) {
+  const schema = Joi.object({
+    name: Joi.string().min(6).required(),
+  });
+  const result = schema.validate(courseObj);
+  return result;
+}
 
 const port = process.env.Port || 3000;
 
