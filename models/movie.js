@@ -1,7 +1,7 @@
 const Joi = require("joi");
 const { validate, number } = require("joi");
 const mongoose = require("mongoose");
-const { GenreSchema } = require("./genres");
+const { GenreSchema } = require("./genre");
 const Movie = mongoose.model(
   "Movies",
   new mongoose.Schema({
