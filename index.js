@@ -1,4 +1,5 @@
 const Joi = require("joi");
+Joi.objectId = require("joi-objectid")(Joi); // object id validation enable for all files
 const customers = require("./routes/customers");
 const genres = require("./routes/genres");
 const movies = require("./routes/movies");
