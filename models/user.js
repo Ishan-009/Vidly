@@ -1,25 +1,38 @@
-// const Joi = require("joi");
-// const { validate } = require("joi");
-// const mongoose = require("mongoose");
+const Joi = require("joi");
+const { validate } = require("joi");
+const mongoose = require("mongoose");
 
-// const RegisterSchema = new mongoose.Schema({
-//   name: String,
-// });
+const userSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: true,
+  },
 
-// // Convert Schema into model and get result and thus we get a class
+  email: {
+    type: String,
+    unique: true,
+    required: true,
+  },
+  phone: {
+    type: Number,
+    required: true,
+  },
+});
 
-// const Genres = mongoose.model("genres", GenreSchema);
+// Convert Schema into model and get result and thus we get a class
 
-// // Validation function for handling request inputs
+const User = mongoose.model("users", userSchema);
 
-// function validateGenre(body) {
-//   const schema = Joi.object({
-//     name: Joi.string().min(3).required(),
-//   });
-//   const result = Joi.validate(body);
-//   return result;
-// }
+// Validation function for handling request inputs
 
-// exports.validate = validateGenre;
-// exports.Genres = Genres;
-// exports.GenreSchema = GenreSchema;
+function validateUser(body) {
+  const schema = Joi.object({
+    name: Joi.string().min(3).required(),
+  });
+  const result = Joi.validate(body);
+  return result;
+}
+
+exports.validate = validateUser;
+exports.Users = Users;
+exports.userSchema = userSchema;

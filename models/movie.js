@@ -1,7 +1,7 @@
 const Joi = require("joi");
 const { validate, number } = require("joi");
 const mongoose = require("mongoose");
-const { GenreSchema } = require("./genre");
+const { GenreSchema } = require("./genre"); // imported genre schema to put reference of genre to genreSchema in genre property in movie object.
 const Movie = mongoose.model(
   "Movies",
   new mongoose.Schema({
