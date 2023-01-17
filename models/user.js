@@ -32,7 +32,7 @@ function validateUser(body) {
       minDomainSegments: 2,
       tlds: { allow: ["com", "net"] },
     }),
-    phoneNumber: Joi.string()
+    phone: Joi.string()
       .length(10)
       .pattern(/[6-9]{1}[0-9]{9}/)
       .required(),
