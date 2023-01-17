@@ -13,8 +13,8 @@ const userSchema = new mongoose.Schema({
     unique: true,
     required: true,
   },
-  phone: {
-    type: Number,
+  password: {
+    type: String,
     required: true,
   },
 });
@@ -32,10 +32,11 @@ function validateUser(body) {
       minDomainSegments: 2,
       tlds: { allow: ["com", "net"] },
     }),
-    phone: Joi.string()
-      .length(10)
-      .pattern(/[6-9]{1}[0-9]{9}/)
-      .required(),
+    password: Joi.string().min(5).max(255).required(),
+    // phone: Joi.string()
+    //   .length(10)
+    //   .pattern(/[6-9]{1}[0-9]{9}/)
+    //   .required(),
   });
   const result = schema.validate(body);
   return result;
