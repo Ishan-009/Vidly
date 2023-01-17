@@ -28,11 +28,19 @@ const User = mongoose.model("users", userSchema);
 function validateUser(body) {
   const schema = Joi.object({
     name: Joi.string().min(3).required(),
+    email: Joi.string().email({
+      minDomainSegments: 2,
+      tlds: { allow: ["com", "net"] },
+    }),
+    phoneNumber: Joi.string()
+      .length(10)
+      .pattern(/[6-9]{1}[0-9]{9}/)
+      .required(),
   });
-  const result = Joi.validate(body);
+  const result = schema.validate(body);
   return result;
 }
 
 exports.validate = validateUser;
-exports.Users = Users;
+exports.User = User;
 exports.userSchema = userSchema;

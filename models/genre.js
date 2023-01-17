@@ -16,7 +16,7 @@ function validateGenre(body) {
   const schema = Joi.object({
     name: Joi.string().min(3).required(),
   });
-  const result = Joi.validate(body);
+  const result = schema.validate(body);
   return result;
 }
 
