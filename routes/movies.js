@@ -14,24 +14,23 @@ router.post("/", async (req, res) => {
   if (error) return res.status(400).send(error.details[0].message);
   console.log(req.body.genreId);
   // let genre = undefined;
-  try {
-    const genre = await Genres.findById("63c102210e121e0980c620e8");
-    let movie = new Movie({
-      title: req.body.title,
-      genre: {
-        _id: genre._id,
-        name: genre.name,
-      },
-      numberInStock: req.body.numberInStock,
-      dailyRentalRate: req.body.dailyRentalRate,
-    });
-    movie = await movie.save();
+  // Genres-> Error solved typo mistake of the Schema Error:-> Genre
+  const genre = await Genres.findById(req.body.genreId);
+  if (!genre) return res.status(400).send("Invalid genre.");
+  let movie = new Movie({
+    title: req.body.title,
+    genre: {
+      _id: genre._id,
+      name: genre.name,
+    },
+    numberInStock: req.body.numberInStock,
+    dailyRentalRate: req.body.dailyRentalRate,
+  });
+  movie = await movie.save();
 
-    res.send(movie);
-  } catch (err) {
-    console.log(err.message);
-  }
-  // if (!genre) return res.status(400).send("Invalid genre.");
+  res.send(movie);
+
+  //
 });
 
 router.put("/:id", async (req, res) => {
