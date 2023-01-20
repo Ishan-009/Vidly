@@ -5,12 +5,20 @@ const genres = require("./routes/genres"); // import genres router
 const movies = require("./routes/movies"); // import movies router
 const rentals = require("./routes/rentals"); // import rentals router
 const users = require("./routes/users"); // import users router
+const auth = require("./routes/auth"); // import auth router
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
-
+const config = require("config");
 // Db Connection
 mongoose.set("strictQuery", false);
+
+// config jwt key check
+
+if (!config.get("jwtPrivateKey")) {
+  console.log("Fatal error: jwtPrivateKey is not defined");
+  process.exit(1);
+}
 
 const uri = "mongodb://127.0.0.1:27017/vidly";
 mongoose
@@ -26,5 +34,6 @@ app.use("/api/customers", customers);
 app.use("/api/movies", movies);
 app.use("/api/rentals", rentals);
 app.use("/api/users", users); // using users path routes
+app.use("/api/auth", auth);
 const port = process.env.PORT || 3000;
 app.listen(port, () => console.log(`Listening on port ${port}...`));
