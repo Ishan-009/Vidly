@@ -1,6 +1,9 @@
+const jwt = require("jsonwebtoken");
+const config = require("config");
 const Joi = require("joi");
 const { validate } = require("joi");
 const mongoose = require("mongoose");
+
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -19,7 +22,10 @@ const userSchema = new mongoose.Schema({
 });
 
 // Convert Schema into model and get result and thus we get a class
-
+userSchema.methods.generateAuthToken = function () {
+  const token = jwt.sign({ _id: this._id }, config.get("jwtPrivateKey"));
+  return token;
+};
 const User = mongoose.model("users", userSchema);
 
 // Validation function for handling request inputs
@@ -37,6 +43,7 @@ function validateUser(body) {
     //   .pattern(/[6-9]{1}[0-9]{9}/)
     //   .required(),
   });
+
   const result = schema.validate(body);
   return result;
 }

@@ -30,7 +30,7 @@ router.post("/", async (req, res) => {
   if (!validPassword) {
     return res.status(400).send("Invalid Email or Password");
   }
-  const token = jwt.sign({ _id: user._id }, config.get("jwtPrivateKey")); // for now jwt key is hardcoded
+  const token = user.generateAuthToken(); // for now jwt key is hardcoded
   res.send(token);
 });
 
