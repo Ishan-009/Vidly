@@ -1,4 +1,5 @@
-const auth = require("../middleware/auth");
+const admin = require("../middleware/admin"); // Admin Middleware
+const auth = require("../middleware/auth"); // Authorization Middleware
 const express = require("express");
 const router = express.Router();
 const Joi = require("joi");
@@ -52,7 +53,7 @@ router.put("/:id", async (req, res) => {
   res.send(genre);
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", [auth, admin], async (req, res) => {
   const genre = await Genres.findByIdAndRemove(req.params.id);
   if (!genre) return res.status(404).send("Genre with given id not found");
   res.send(genre);
