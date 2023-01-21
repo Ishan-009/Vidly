@@ -9,8 +9,12 @@ router.use(express.json());
 // Routes
 // GET
 router.get("/", auth, async (req, res) => {
-  const genre = await Genres.find().sort("name");
-  res.send(genre);
+  try {
+    const genre = await Genres.find().sort("name");
+    res.send(genre);
+  } catch (ex) {
+    next(ex);
+  }
 });
 
 router.get("/:id", async (req, res) => {
@@ -53,6 +57,7 @@ router.put("/:id", async (req, res) => {
   res.send(genre);
 });
 
+// Here in this route request handler we have passed two middleware one checks if user is authorized logged in or not  or not and other checks admin access to perform the following operation i.ee deleting genre
 router.delete("/:id", [auth, admin], async (req, res) => {
   const genre = await Genres.findByIdAndRemove(req.params.id);
   if (!genre) return res.status(404).send("Genre with given id not found");
